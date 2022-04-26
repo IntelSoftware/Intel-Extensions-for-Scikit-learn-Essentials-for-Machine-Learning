@@ -26,10 +26,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-XenoSupermanGalaxy_Arms = np.load('Data/XenoSupermanGalaxy_Arms.npy')
-XenoSupermanGalaxy_CenterGlob = np.load('Data/XenoSupermanGalaxy_CenterGlob.npy')
-XenoSupermanGalaxy_Stars = np.load('Data/XenoSupermanGalaxy_Stars.npy')
-XenoSupermanGalaxy_tooClose = np.load('Data/XenoSupermanGalaxy_tooClose.npy')
+XenoSupermanGalaxy_Arms = np.load('../Data/XenoSupermanGalaxy_Arms.npy')
+XenoSupermanGalaxy_CenterGlob = np.load('../Data/XenoSupermanGalaxy_CenterGlob.npy')
+XenoSupermanGalaxy_Stars = np.load('../Data/XenoSupermanGalaxy_Stars.npy')
+XenoSupermanGalaxy_tooClose = np.load('../Data/XenoSupermanGalaxy_tooClose.npy')
 
 XenoSupermanGalaxy = {}
 XenoSupermanGalaxy['Arms'] = XenoSupermanGalaxy_Arms
@@ -37,10 +37,10 @@ XenoSupermanGalaxy['CenterGlob'] = XenoSupermanGalaxy_CenterGlob
 XenoSupermanGalaxy['Stars'] = XenoSupermanGalaxy_Stars
 XenoSupermanGalaxy['tooClose'] = XenoSupermanGalaxy_tooClose
 
-GFFA_Arms = np.load('Data/GFFA_Arms.npy')
-GFFA_CenterGlob = np.load('Data/GFFA_CenterGlob.npy')
-GFFA_Stars = np.load('Data/GFFA_Stars.npy')
-GFFA_tooClose = np.load('Data/GFFA_tooClose.npy')
+GFFA_Arms = np.load('../Data/GFFA_Arms.npy')
+GFFA_CenterGlob = np.load('../Data/GFFA_CenterGlob.npy')
+GFFA_Stars = np.load('../Data/GFFA_Stars.npy')
+GFFA_tooClose = np.load('../Data/GFFA_tooClose.npy')
 
 GFFA = {}
 GFFA['Arms'] = GFFA_Arms
