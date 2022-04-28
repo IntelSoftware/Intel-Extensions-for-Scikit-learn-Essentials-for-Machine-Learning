@@ -48,18 +48,26 @@ else:
     print("CPU targeted: ", cpu_device)
 
 if gpu_available:
-    # target a remote host GPU when submitted via q.sh or qsub -I
+    # target a remote hosy CPU when submitted via q.sh or qsub -I
     x_train_device = dpctl.tensor.from_numpy(x_train, usm_type = 'device', queue=dpctl.SyclQueue(gpu_device))
     y_train_device = dpctl.tensor.from_numpy(y_train, usm_type = 'device', queue=dpctl.SyclQueue(gpu_device))    
     x_test_device = dpctl.tensor.from_numpy(x_test, usm_type = 'device', queue=dpctl.SyclQueue(gpu_device))
     y_test_device = dpctl.tensor.from_numpy(y_test, usm_type = 'device', queue=dpctl.SyclQueue(gpu_device))
 else:
-    # target a remote host CPU when submitted via q.sh or qsub -I
+    # target a remote hosy CPU when submitted via q.sh or qsub -I
     x_train_device = dpctl.tensor.from_numpy(x_train, usm_type = 'device', queue=dpctl.SyclQueue(cpu_device))
     y_train_device = dpctl.tensor.from_numpy(y_train, usm_type = 'device', queue=dpctl.SyclQueue(cpu_device))    
     x_test_device = dpctl.tensor.from_numpy(x_test, usm_type = 'device', queue=dpctl.SyclQueue(cpu_device))
     y_test_device = dpctl.tensor.from_numpy(y_test, usm_type = 'device', queue=dpctl.SyclQueue(cpu_device))    
 
+# set up KNN algorithm parameters
+# 'n_neighbors': 40,  
+#     regulates how many neighbors should be checked when an item is being classified
+# 'weights': 'distance',
+#     signifies how weight should be distributed between neighbor values.
+#     This value will cause weights to be distributed based on their distance (inversely correlated). Closer neighbors will have a higher weight in the algorithm.
+# 'n_jobs': -1
+#     Signifies the parallel jobs to be allowed at the same time for neighbor algorithm
 params = {
     'n_neighbors': 40,  
     'weights': 'distance'
@@ -68,13 +76,8 @@ print('dataset shape: ', x_train_device.shape)
 
 from sklearn.neighbors import KNeighborsClassifier
 knn = KNeighborsClassifier(**params).fit(x_train_device, y_train_device)
-
 predictedGPU = knn.predict(x_test_device) #Predict on GPU
-#predictedCPU = knn.predict(x_test) #Predict on CPU
-predictedGPUNumpy = dpctl.tensor.to_numpy(predictedGPU)
+predictedCPU = knn.predict(x_test) #Predict on CPU
 
-reportGPU = metrics.classification_report(y_test, predictedGPUNumpy)
-print(f"Classification report for kNN Fit and Predicted on GPU:\n{reportGPU}\n")
-
-reportCPU = metrics.classification_report(y_test, predictedCPU)
-print(f"Classification report for kNN Fit on GPU and Predicted on CPU:\n{reportCPU}\n")
+report = metrics.classification_report(y_test, predictedCPU)
+print(f"Classification report for kNN:\n{report}\n")
